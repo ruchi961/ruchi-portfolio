@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ruchi Mali — A.I. Engineer / Researcher</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<style>
+/* ═══════════════════════════
+   RESET & TOKENS
+═══════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+:root {
+  --d1:#031a06;  --d2:#0a2e0f;  --d3:#155220;
+  --m1:#1b5e20;  --m2:#2e7d32;  --m3:#388e3c;
+  --l1:#43a047;  --l2:#66bb6a;  --l3:#a5d6a7;
+  --p1:#e8f5e9;  --p2:#f1f9f1;  --p3:#f8fdf8;
+  --white:#fff;
+  --ink:#0d1f10;  --ink2:#2d4a30;  --ink3:#5a7460;
+  --r:14px; --rs:9px;
+  --sh1:0 2px 8px rgba(10,46,15,.08);
+  --sh2:0 6px 24px rgba(10,46,15,.13);
+  --sh3:0 16px 56px rgba(10,46,15,.18);
+  --shg:0 0 60px rgba(67,160,71,.18);
+}
+
+body {
+  font-family:'Inter',sans-serif;
+  background:var(--p2);
+  background-image:
+    radial-gradient(ellipse 90% 50% at 50% -5%, rgba(46,125,50,.10) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 90% 100%, rgba(21,82,32,.07) 0%, transparent 60%);
+  color:var(--ink);
+  min-height:100vh;
+  padding:32px 20px 130px;
+  /* ensure body never clips text */
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+}
+
+/* ═══════════════════════════
+   PAGE WRAPPER
+═══════════════════════════ */
+.page {
+  max-width:1080px;
+  margin:0 auto;
+  display:flex; flex-direction:column; gap:18px;
+}
+
+/* global word-wrap on everything */
+.page * {
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+  min-width:0;        /* crucial: lets flex/grid children shrink below content size */
+}
+
+/* ═══════════════════════════
+   HERO CARD
+═══════════════════════════ */
+.hero {
+  border-radius:var(--r);
+  overflow:hidden;
+  box-shadow:var(--sh3), var(--shg);
+  background:linear-gradient(140deg, var(--d1) 0%, var(--m1) 45%, var(--m3) 80%, var(--l1) 100%);
+  position:relative;
+  opacity:0; transform:translateY(-20px);
+  transition:opacity .65s ease, transform .65s ease;
+}
+.hero.on { opacity:1; transform:none; }
+
+.hero::before {
+  content:''; position:absolute; top:-80px; right:-80px;
+  width:340px; height:340px; border-radius:50%;
+  background:radial-gradient(circle, rgba(102,187,106,.18) 0%, transparent 65%);
+  pointer-events:none;
+}
+.hero::after {
+  content:''; position:absolute; bottom:-100px; left:-50px;
+  width:400px; height:400px; border-radius:50%;
+  background:radial-gradient(circle, rgba(165,214,167,.09) 0%, transparent 60%);
+  pointer-events:none;
+}
+
+.hero-grid {
+  display:grid;
+  grid-template-columns:210px 1fr 230px;
+  position:relative; z-index:1;
+}
+.hero-grid > * + * { border-left:1px solid rgba(255,255,255,.10); }
+
+/* ── Social col ── */
+.social-col { padding:30px 22px; }
+.col-tag {
+  font-size:10px; font-weight:600; letter-spacing:2.5px;
+  text-transform:uppercase; color:var(--l3); margin-bottom:18px; opacity:.85;
+}
+.social-list { list-style:none; }
+.social-list li { margin:9px 0; }
+.social-list a {
+  display:flex; align-items:center; gap:11px;
+  text-decoration:none; color:rgba(255,255,255,.82);
+  font-size:13.5px; font-weight:500;
+  padding:7px 10px; border-radius:9px;
+  transition:background .2s, color .2s, transform .22s;
+  white-space:nowrap;
+}
+.social-list a:hover { background:rgba(255,255,255,.11); color:#fff; transform:translateX(5px); }
+.si {
+  width:28px; height:28px; border-radius:8px;
+  display:grid; place-items:center; flex-shrink:0;
+  box-shadow:0 2px 10px rgba(0,0,0,.35);
+}
+.si svg { width:14px; height:14px; fill:#fff; }
+.si-li { background:linear-gradient(135deg,#0a66c2,#003e7a); }
+.si-gh { background:linear-gradient(135deg,#2d333b,#111); }
+.si-bl { background:linear-gradient(135deg,var(--l1),var(--m2)); }
+.si-hf { background:linear-gradient(135deg,var(--m2),var(--d2)); }
+
+/* ── Name col ── */
+.name-col {
+  text-align:center; padding:34px 28px 28px;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.name-col h1 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(26px,4vw,48px); font-weight:700; color:#fff;
+  letter-spacing:-.3px; line-height:1.05;
+  text-shadow:0 2px 24px rgba(0,0,0,.35);
+  word-wrap:break-word;
+}
+.divline {
+  width:60px; height:2px; margin:13px auto;
+  background:linear-gradient(90deg, transparent, var(--l2), transparent);
+  border-radius:2px; flex-shrink:0;
+}
+.name-col h2 { font-size:16px; font-weight:300; color:var(--l3); letter-spacing:.6px; }
+.name-col p  { margin-top:9px; font-size:12.5px; font-style:italic; color:rgba(255,255,255,.45); font-weight:300; }
+
+/* ── Connect col ── */
+.connect-col {
+  padding:30px 22px;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:14px;
+}
+.email-btn {
+  display:flex; align-items:center; justify-content:center; gap:9px;
+  width:100%; padding:13px 18px;
+  border:none; border-radius:10px;
+  background:linear-gradient(135deg, var(--l2), var(--l1), var(--m2));
+  color:var(--d1); font-size:14.5px; font-weight:700;
+  cursor:pointer; font-family:'Inter',sans-serif;
+  box-shadow:0 4px 22px rgba(102,187,106,.40);
+  transition:transform .2s, box-shadow .2s; letter-spacing:.2px;
+  white-space:nowrap;
+}
+/*.email-btn:hover { transform:translateY(-3px); box-shadow:0 10px 32px rgba(102,187,106,.55); }*/
+.email-btn svg { width:16px; height:16px; fill:var(--d1); flex-shrink:0; }
+
+/* email display row */
+.email-display {
+  width:100%;
+  display:flex; align-items:center; gap:7px;
+  background:rgba(255,255,255,0.10);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:9px; padding:8px 11px;
+}
+.email-text {
+  flex:1; font-size:12px; font-weight:500;
+  color:rgba(255,255,255,0.85); letter-spacing:.2px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.copy-btn {
+  display:flex; align-items:center; justify-content:center; gap:1px;
+  border:none; border-radius:7px; cursor:pointer;
+  background:rgba(255,255,255,0.18);
+  color:#fff; font-size:11.5px; font-weight:600;
+  padding:5px 10px; font-family:'Inter',sans-serif;
+  transition:background .2s, transform .15s;
+  flex-shrink:0; white-space:nowrap;
+}
+.copy-btn:hover { background:rgba(255,255,255,0.30); transform:scale(1.05); }
+.copy-btn svg { width:12px; height:12px; fill:#fff; }
+
+/* ═══════════════════════════
+   ABOUT CARD
+═══════════════════════════ */
+.about-card {
+  background:var(--white);
+  border-radius:var(--r);
+  padding:28px 32px 30px;
+  box-shadow:var(--sh2);
+  border:1px solid rgba(165,214,167,.30);
+  position:relative; overflow:hidden;
+  opacity:0; transform:translateY(18px);
+  transition:opacity .55s .15s ease, transform .55s .15s ease;
+}
+.about-card.on { opacity:1; transform:none; }
+.about-card::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:5px;
+  background:linear-gradient(180deg, var(--l1), var(--m1), var(--d2));
+  border-radius:5px 0 0 5px;
+}
+.about-card::after {
+  content:''; position:absolute; top:-50px; right:-50px;
+  width:160px; height:160px; border-radius:50%;
+  background:radial-gradient(circle, rgba(165,214,167,.12) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.sec-title {
+  font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--m2); margin-bottom:18px;
+  display:flex; align-items:center; gap:12px;
+}
+.sec-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg, var(--l3), transparent); }
+
+.about-list { list-style:none; }
+.about-list li {
+  display:flex; align-items:flex-start; gap:13px;
+  padding:9px 0;
+  border-bottom:1px solid rgba(165,214,167,.20);
+  font-size:13.5px; color:var(--ink2); line-height:1.65;
+}
+.about-list li:last-child { border-bottom:none; }
+
+.bullet {
+  flex-shrink:0; margin-top:4px;
+  display:flex; align-items:center; gap:5px;
+  background:linear-gradient(135deg, var(--l1), var(--m2));
+  border-radius:20px; padding:3px 9px 3px 6px;
+  box-shadow:0 2px 8px rgba(67,160,71,.30);
+  transition:transform .2s, box-shadow .2s;
+}
+.about-list li:hover .bullet { transform:scale(1.08); box-shadow:0 4px 14px rgba(67,160,71,.45); }
+.bullet svg { width:9px; height:9px; fill:#fff; }
+.bullet-txt { font-size:9.5px; font-weight:700; color:#fff; letter-spacing:.5px; text-transform:uppercase; white-space:nowrap; }
+.about-list a { color:var(--m2); font-weight:500; text-decoration:none; }
+.about-list a:hover { text-decoration:underline; }
+
+/* ═══════════════════════════
+   WORK ROW
+═══════════════════════════ */
+.work-row {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  /* grid children get full word-wrap */
+  align-items:start;
+}
+
+.work-card {
+  background:var(--white);
+  border-radius:var(--r);
+  overflow:hidden;
+  box-shadow:var(--sh2);
+  border:1px solid rgba(165,214,167,.28);
+  opacity:0; transform:translateY(22px);
+  transition:opacity .5s ease, transform .5s ease, box-shadow .3s;
+  /* let height grow with content */
+  height:auto;
+}
+.work-card.on { opacity:1; transform:none; }
+.work-card:hover { box-shadow:var(--sh3); }
+
+.work-title {
+  padding:14px 20px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:19px; font-weight:700;
+  text-align:center; color:#fff; letter-spacing:.4px;
+  background:linear-gradient(135deg, var(--d1) 0%, var(--m2) 55%, var(--l1) 100%);
+  position:relative; overflow:hidden;
+  word-wrap:break-word;
+}
+.work-title::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);
+}
+
+.work-body { padding:14px; }
+
+/* ── project item ── */
+.proj {
+  border-radius:var(--rs);
+  margin-bottom:12px; overflow:hidden;
+  box-shadow:var(--sh1);
+  border:1px solid rgba(165,214,167,.35);
+  transition:transform .22s, box-shadow .22s;
+  /* expand with content */
+  height:auto;
+}
+.proj:last-child { margin-bottom:0; }
+.proj:hover { transform:translateY(-2px); box-shadow:var(--sh2); }
+
+/* heading + year row */
+.proj-top {
+  display:flex; align-items:flex-start; gap:8px;
+  padding:9px 14px;
+  background:linear-gradient(135deg, var(--d2) 0%, var(--m2) 60%, var(--l1) 100%);
+  /* word wrap for long headings */
+  flex-wrap:wrap;
+}
+.proj-heading {
+  flex:1; 
+  font-size:15px; font-weight:700; color:#fff;
+  letter-spacing:.2px; line-height:1.4;
+  word-wrap:break-word; overflow-wrap:break-word; min-width:0;
+}
+.proj-year {
+  font-size:11px; color:rgba(255,255,255,.85);
+  background:rgba(255,255,255,.16);
+  padding:3px 10px; border-radius:20px;
+  font-weight:500; white-space:nowrap;
+  letter-spacing:.3px; flex-shrink:0; align-self:flex-start;
+}
+
+/* description bullet list */
+.proj-desc {
+  background:#fff;
+  padding:8px 14px 8px 14px;
+  border-bottom:1px dashed rgba(165,214,167,.45);
+}
+.proj-desc ul { list-style:none; }
+.proj-desc ul li {
+  display:flex; align-items:flex-start; gap:8px;
+  font-size:12.5px; color:var(--ink3); line-height:1.6;
+  padding:3px 0;
+  word-wrap:break-word; overflow-wrap:break-word;
+}
+.proj-desc ul li::before {
+  content:'';
+  flex-shrink:0; margin-top:6px;
+  width:6px; height:6px; border-radius:50%;
+  background:linear-gradient(135deg, var(--l1), var(--m2));
+  box-shadow:0 1px 4px rgba(67,160,71,.4);
+}
+
+/* link row */
+.proj-link {
+  background:var(--p1);
+  padding:7px 14px;
+  display:flex; align-items:flex-start; gap:7px;
+  flex-wrap:wrap;
+}
+/* arrow before link */
+.link-arrow {
+  flex-shrink:0; margin-top:1px;
+  display:flex; align-items:center; justify-content:center;
+  width:18px; height:18px; border-radius:5px;
+  background:linear-gradient(135deg, var(--l1), var(--m2));
+  box-shadow:0 2px 6px rgba(67,160,71,.35);
+}
+.link-arrow svg { width:11px; height:11px; fill:#fff; }
+.proj-link a {
+  font-size:12.5px; color:var(--ink3);
+  text-decoration:none; font-weight:500;
+  transition:color .15s; line-height:1.5;
+  word-wrap:break-word; overflow-wrap:break-word; min-width:0;
+}
+.proj-link a:hover { color:var(--m2); }
+
+/* ═══════════════════════════
+   SCROLL ARROW
+═══════════════════════════ */
+.scroll-arrow {
+  position:fixed; bottom:28px; left:50%;
+  transform:translateX(-50%);
+  width:48px; height:48px; border-radius:50%;
+  background:linear-gradient(135deg, var(--l1), var(--m1));
+  border:2px solid rgba(255,255,255,.20);
+  cursor:pointer; display:grid; place-items:center;
+  box-shadow:0 4px 22px rgba(27,94,32,.45);
+  z-index:9999; opacity:0; pointer-events:none;
+  transition:opacity .3s;
+}
+.scroll-arrow.show { opacity:1; pointer-events:all; }
+.scroll-arrow svg { width:22px; height:22px; fill:#fff; }
+
+@keyframes bD {
+  0%,100% { transform:translateX(-50%) translateY(0); }
+  35%      { transform:translateX(-50%) translateY(-12px); }
+  60%      { transform:translateX(-50%) translateY(-5px); }
+}
+@keyframes bU {
+  0%,100% { transform:translateX(-50%) translateY(0); }
+  35%      { transform:translateX(-50%) translateY(-12px); }
+  60%      { transform:translateX(-50%) translateY(-5px); }
+}
+#arrowDown.bounce { animation:bD .7s cubic-bezier(.36,.07,.19,.97); }
+#arrowUp.bounce   { animation:bU .7s cubic-bezier(.36,.07,.19,.97); }
+
+/* ═══════════════════════════
+   RESPONSIVE
+═══════════════════════════ */
+@media(max-width:760px){
+  .hero-grid { grid-template-columns:1fr; }
+  .hero-grid > * + * { border-left:none; border-top:1px solid rgba(255,255,255,.10); }
+  .work-row { grid-template-columns:1fr; }
+  .about-card { padding:22px 18px 24px 22px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<!-- ════════════ HERO ════════════ -->
+<div class="hero" id="hero">
+  <div class="hero-grid">
+
+    <div class="social-col">
+      <div class="col-tag">Social Links</div>
+      <ul class="social-list">
+        <li><a href="www.linkedin.com/in/ruchi01" target="_blank" rel="noopener noreferrer">
+          <span class="si si-li"><svg viewBox="0 0 24 24"><path d="M20.447 20.452H17V14.882c0-1.328-.025-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.668H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a1.982 1.982 0 1 1 0-3.965 1.982 1.982 0 0 1 0 3.965zm1.706 13.019H3.63V9h3.413v11.452zM22.225 0H1.771C.79 0 0 .774 0 1.729v20.542C0 23.227.79 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span>
+          Linkedin
+        </a></li>
+        <li><a href="www.github.com/ruchi961" target="_blank">
+          <span class="si si-gh"><svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>
+          Github
+        </a></li>
+        <li><a href="www.medium.com/ruchi01" target="_blank">
+          <span class="si si-bl"><svg viewBox="0 0 24 24"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19.01 7.38 20 6.18 20C4.98 20 4 19.01 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/></svg></span>
+          Blog Site
+        </a></li>
+        <li><a href="www.huggingface.com/ruchi01" target="_blank">
+          <span class="si si-hf"><svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.5 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm3 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM8 11h2v2H8zm6 0h2v2h-2zm-3 4c2.2 0 4-1 4-2H7c0 1 1.8 2 4 2z"/></svg></span>
+          Huggingface
+        </a></li>
+      </ul>
+    </div>
+
+    <div class="name-col">
+      <h1>Ruchi Mali</h1>
+      <div class="divline"></div>
+      <h2>A.I. Engineer / Researcher</h2>
+      <p>Exploring the width of A.I.</p>
+    </div>
+
+    <div class="connect-col">
+      <div class="col-tag" style="text-align:center">Connect with me</div>
+      <button class="email-btn" onclick="window.location='mailto:ruchi@example.com'" disabled>
+        <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        Email
+      </button>
+      <div class="email-display">
+        <span class="email-text" id="emailAddr">ruchim2109@gmail.com</span>
+        
+      </div>
+<button class="copy-btn" id="copyBtn" onclick="copyEmail()">
+          <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          Copy
+        </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════ ABOUT ════════════ -->
+<div class="about-card" id="about">
+  <div class="sec-title">A little bit about me</div>
+  <ul class="about-list">
+    <li>
+      <span class="bullet"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="bullet-txt">MSc</span></span>
+      2024 M.Sc. C.S. with 9.94 CGPA and participant of international conference on millets
+    </li>
+    <li>
+      <span class="bullet"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="bullet-txt">Startup</span></span>
+      Served as Founding AI engineer (amongst the first 5 members), at an A.I. startup "Bhabha AI. Pvt."
+    </li>
+    <li>
+      <span class="bullet"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="bullet-txt">Teams</span></span>
+      Collaborated across many teams as team members as well as team leader across professional and academic platforms
+    </li>
+    <li>
+      <span class="bullet"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="bullet-txt">Research</span></span>
+      Currently pursuing Independent research and looking for an amazing opportunity where A.I. meets passion and innovation.
+    </li>
+    <li>
+      <span class="bullet"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="bullet-txt">50+ Projects</span></span>
+      Contributed and developed around 50+ projects (few open source) on varied domains A.I, ML, DL, Blockchain, Data Science, Full Stack etc.
+    </li>
+    <li>
+      <span class="bullet"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="bullet-txt">Client Work</span></span>
+      Successfully handled many Client Projects and Company Standalone projects and research problem statements
+    </li>
+    <li>
+      <span class="bullet"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="bullet-txt">Extra</span></span>
+      Extra Curriculars in Psychology and Heritage (with unpublished research papers) &amp; language (French)
+    </li>
+  </ul>
+</div>
+
+<!-- ════════════ WORK ════════════ -->
+<div class="work-row" id="work">
+
+  <!-- Professional Experience -->
+  <div class="work-card" id="wc1">
+    <div class="work-title">Professional Experience</div>
+    <div class="work-body">
+      <div class="proj">
+        <div class="proj-top">
+          <span class="proj-heading">Independent AI Researcher</span>
+          <span class="proj-year">March 2025 - Febraury 2026</span>
+        </div>
+        <div class="proj-desc"><ul>
+          <li> Developing research papers based on new ideas and novel tecnhiques as well as old ideas as developed during academic years, currently targetting research publications. </li>
+        </ul></div>
+        <!--<div class="proj-link">
+           <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+         <a href="#">Link to the project</a>
+        </div>-->
+      </div>
+
+      <div class="proj">
+        <div class="proj-top">
+          <span class="proj-heading">Founding AI Engineer</span>
+          <span class="proj-year">June 2024 - March 2025</span>
+        </div>
+<div class="proj-link">
+          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <a style="font-size:15px">Bhabha AI Pvt. Ltd. Startup</a>
+        </div>
+        
+<div class="proj-link">
+          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <a>Links to the projects</a>
+	<a style="font-size:15px" href="www.github.com/BhabhaAI/dataformer" target="_blank">Dataformer</a>
+        </div>
+
+<div class="proj-desc"><ul>
+          <li>Developed many international client projects, company standalone projects and open source projects.</li>
+<li>Developed Synthetic dataset generation pipeline (open source) with support for LLMs across all platforms and using novel 
+techniques for synthetic data generation like cot, async request, cache management etc</li>
+<li>Developed <strong>LLM Chat Simulations</strong> in alt vibe </li>
+<li>Developed a Legal LLM, ( US UK and Europe jurisdiction ) with 
+extensive research, data collection and generation and varied finetuining methods as well as developed whole score evaluation system for us/uk client. </li>
+<li>Worked on GPUS, async requests, cache optimizations, 
+logging, Web To Slack notifications, llm compression 
+techniques kvpress, etc. </li>
+<li>Worked on Full stack project <strong>Notify GPT</strong> with web scrapping</li>
+<li>Created subsystem as in wizardlm research paper</li>
+<li><strong>Utilized Model Inference Techniques like cot (chain of 
+thought), pvg ( Prover Verifier Games), rto (reinforced 
+token optimization), etc.</strong> </li>
+<li><strong>Conducted Blockchain mining for Agentao and Condense
+AI (used agent architecture like Swe Agent, Network of  
+multiple LLMS, prompt engineering etc).</strong></li>
+<li>Developed test cases manual and automatic with pytest.</li>
+<li>Finetuning LLMs, with experiments, evaluation against 
+benchmarks, used un-censoring techniques like dpo, 
+abliteration, kto,  etc. </li>
+          <li>Extensively worked on run pod, modal, AWS remote servers, 
+cursor, windsurf. </li>
+        </ul></div>
+
+      </div>
+
+      <div class="proj">
+        <div class="proj-top">
+          <span class="proj-heading">A.I. and Data Science Intern</span>
+          <span class="proj-year">December 2023 - April 2024</span>
+        </div>
+        <div class="proj-link">
+          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <a href="#" style="font-size:15px">Quantasis Pvt. Ltd.</a>
+        </div>
+        <div class="proj-desc"><ul>
+          <li>Worked on  image to text, voice to text, text to voice, LLMS, 
+yolo, python, flask, APIs Testing, neural networks, OCR, 
+data acquisition, NLP, RAG, Lang chain Framework, 
+Aiding in Model Deployment on Virtual Machine, 
+Optimizing code. </li>
+      
+        </ul></div>
+
+      </div>
+
+
+    </div>
+  </div>
+
+  <!-- My Independent Work -->
+  <div class="work-card" id="wc2">
+    <div class="work-title">My Independent work</div>
+    <div class="work-body">
+
+      <div class="proj">
+        <div class="proj-top">
+          <span class="proj-heading"> Computer Vision Novel Methods for Handwriting Analysis 
+to detect psychological and behavioural problem and 
+aid the counselling process. </span>
+          <span class="proj-year">2023</span>
+        </div>
+        <div class="proj-desc"><ul>
+          <li> Implemented Novel CV Methods for identifying features 
+of Handwriting and Classifying them into groups of 
+psychological, behavioural problems to aid counselling 
+process in Schools. Used Unsupervised learning (K 
+modes, KNN), real data collected from school. </li>
+         
+        </ul></div>
+        <!--<div class="proj-link">
+          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <a href="#">Link to the project</a>
+        </div>-->
+      </div>
+
+      <div class="proj">
+        <div class="proj-top">
+          <span class="proj-heading"> Association Mining implementations  </span>
+          <span class="proj-year">2023</span>
+        </div>
+        <div class="proj-desc"><ul>
+          <li>Novel method for optimising Apriori Algorithm.  
+o Implemented Apriori and FP Tree on different datasets.</li>
+
+        </ul></div>
+        <!--<div class="proj-link">
+          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <a href="#">Link to the project</a>
+        </div>-->
+      </div>
+
+      <div class="proj">
+  
+      <div class="proj-top">
+          <span class="proj-heading"> Genetic Algorithm and Ant Colony Optimisation</span>
+          <span class="proj-year">2022</span>
+        </div>
+        <div class="proj-desc"><ul>
+          <li> Scratch development of Genetic Algorithm and Ant 
+Colony Optimisation. </li>
+        </ul></div>
+        <!--<div class="proj-link">
+          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <a href="#">Link to the project</a>
+        </div>-->
+
+ </div>
+    <div class="proj">
+        <div class="proj-top">
+          <span class="proj-heading">  Relation on Reading Quotes and Emotions </span>
+          <span class="proj-year">2022</span>
+        </div>
+        <div class="proj-desc"><ul>
+          <li> On ground collection of data with questionnaire and 
+finding support for the hypothesis, “Positive Quotes 
+influence positive thoughts”.  </li>
+        </ul></div>
+       <!-- <div class="proj-link">
+          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <a href="#">Link to the project</a>
+        </div>-->
+ </div>
+    <div class="proj">
+        <div class="proj-top">
+          <span class="proj-heading"> Recipe Generator with Deep Learning</span>
+          <span class="proj-year">2022</span>
+        </div>
+        <div class="proj-desc"><ul>
+          <li>Conditional Transformer (Hugging Face) to generate 
+Novel Recipes from the Ingredients given, a full end
+to-end web application for generating recipes either 
+from existing database or creating new ones with 
+text generation. Full stack website.  </li>
+        </ul></div>
+        <!--<div class="proj-link">
+          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        <a href="#">Link to the project</a>
+        </div>-->
+</div>
+    <div class="proj">
+        <div class="proj-top">
+          <span class="proj-heading"> URL Phishing prediction</span>
+          <span class="proj-year">2022</span>
+        </div>
+        <div class="proj-desc"><ul>
+          <li>  Predicting if URL is phished or not with Random Forest 
+Classifier and feature extraction methods.  </li>
+        </ul></div>
+        <!--<div class="proj-link">
+          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <a href="#">Link to the project</a>
+        </div>-->
+      </div>
+
+
+    <div class="proj">
+        <div class="proj-top">
+          <span class="proj-heading"> Solar Flare Prediction </span>
+          <span class="proj-year">2021</span>
+        </div>
+        <div class="proj-desc"><ul>
+          <li>Predict the possible regions of solar flares with SVM by 
+analysing the rays data of sun.   </li>
+        </ul></div>
+       <!-- <div class="proj-link">
+          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          <a href="#">Link to the project</a>
+        </div>-->
+ </div>
+
+    </div>
+  </div>
+
+</div><!-- /work-row -->
+</div><!-- /page -->
+
+<!-- scroll arrows -->
+<button class="scroll-arrow show" id="arrowDown" title="Scroll down">
+  <svg viewBox="0 0 24 24"><path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+</button>
+<button class="scroll-arrow" id="arrowUp" title="Scroll up">
+  <svg viewBox="0 0 24 24"><path d="M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6 1.41 1.41z"/></svg>
+</button>
+
+<script>
+$(function(){
+
+  /* entrance stagger */
+  setTimeout(function(){ $('#hero').addClass('on'); }, 80);
+  setTimeout(function(){ $('#about').addClass('on'); }, 280);
+  setTimeout(function(){ $('#wc1').addClass('on'); }, 450);
+  setTimeout(function(){ $('#wc2').addClass('on'); }, 590);
+
+  /* bounce */
+  function bounce($el){
+    $el.removeClass('bounce')[0].offsetWidth;
+    $el.addClass('bounce').one('animationend webkitAnimationEnd',function(){
+      $el.removeClass('bounce');
+    });
+  }
+
+  bounce($('#arrowDown'));
+  var dTimer = setInterval(function(){ bounce($('#arrowDown')); }, 1500);
+
+  $('#arrowDown').on('click',function(){
+    $('html,body').animate({ scrollTop: $('#work').offset().top - 16 }, 520);
+  });
+  $('#arrowUp').on('click',function(){
+    $('html,body').animate({ scrollTop: 0 }, 520);
+  });
+
+  $(window).on('scroll',function(){
+    var st = $(this).scrollTop();
+    if(st > 70){
+      if(!$('#arrowUp').hasClass('show')){ $('#arrowUp').addClass('show'); bounce($('#arrowUp')); }
+      $('#arrowDown').removeClass('show');
+      clearInterval(dTimer); dTimer = null;
+    } else {
+      if(!$('#arrowDown').hasClass('show')){
+        $('#arrowDown').addClass('show'); bounce($('#arrowDown'));
+        dTimer = setInterval(function(){ bounce($('#arrowDown')); }, 1500);
+      }
+      $('#arrowUp').removeClass('show');
+    }
+  });
+
+  /* about bullet hover pulse */
+  $('.about-list li').on('mouseenter',function(){
+    $(this).find('.bullet').css('transform','scale(1.1)');
+  }).on('mouseleave',function(){
+    $(this).find('.bullet').css('transform','');
+  });
+
+});
+
+function copyEmail(){
+  var email = document.getElementById('emailAddr').textContent.trim();
+  navigator.clipboard.writeText(email).then(function(){
+    var btn = document.getElementById('copyBtn');
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Copied!';
+    btn.style.background = 'rgba(102,187,106,0.45)';
+    setTimeout(function(){
+      btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> Copy';
+      btn.style.background = '';
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
