@@ -37,30 +37,22 @@ body {
   color:var(--ink);
   min-height:100vh;
   padding:32px 20px 130px;
-  /* ensure body never clips text */
   word-wrap:break-word;
   overflow-wrap:break-word;
 }
 
-/* ═══════════════════════════
-   PAGE WRAPPER
-═══════════════════════════ */
 .page {
   max-width:1080px;
   margin:0 auto;
   display:flex; flex-direction:column; gap:18px;
 }
 
-/* global word-wrap on everything */
 .page * {
   word-wrap:break-word;
   overflow-wrap:break-word;
-  min-width:0;        /* crucial: lets flex/grid children shrink below content size */
+  min-width:0;
 }
 
-/* ═══════════════════════════
-   HERO CARD
-═══════════════════════════ */
 .hero {
   border-radius:var(--r);
   overflow:hidden;
@@ -92,7 +84,6 @@ body {
 }
 .hero-grid > * + * { border-left:1px solid rgba(255,255,255,.10); }
 
-/* ── Social col ── */
 .social-col { padding:30px 22px; }
 .col-tag {
   font-size:10px; font-weight:600; letter-spacing:2.5px;
@@ -120,7 +111,6 @@ body {
 .si-bl { background:linear-gradient(135deg,var(--l1),var(--m2)); }
 .si-hf { background:linear-gradient(135deg,var(--m2),var(--d2)); }
 
-/* ── Name col ── */
 .name-col {
   text-align:center; padding:34px 28px 28px;
   display:flex; flex-direction:column;
@@ -141,7 +131,6 @@ body {
 .name-col h2 { font-size:16px; font-weight:300; color:var(--l3); letter-spacing:.6px; }
 .name-col p  { margin-top:9px; font-size:12.5px; font-style:italic; color:rgba(255,255,255,.45); font-weight:300; }
 
-/* ── Connect col ── */
 .connect-col {
   padding:30px 22px;
   display:flex; flex-direction:column;
@@ -158,10 +147,8 @@ body {
   transition:transform .2s, box-shadow .2s; letter-spacing:.2px;
   white-space:nowrap;
 }
-/*.email-btn:hover { transform:translateY(-3px); box-shadow:0 10px 32px rgba(102,187,106,.55); }*/
 .email-btn svg { width:16px; height:16px; fill:var(--d1); flex-shrink:0; }
 
-/* email display row */
 .email-display {
   width:100%;
   display:flex; align-items:center; gap:7px;
@@ -186,9 +173,6 @@ body {
 .copy-btn:hover { background:rgba(255,255,255,0.30); transform:scale(1.05); }
 .copy-btn svg { width:12px; height:12px; fill:#fff; }
 
-/* ═══════════════════════════
-   ABOUT CARD
-═══════════════════════════ */
 .about-card {
   background:var(--white);
   border-radius:var(--r);
@@ -242,14 +226,10 @@ body {
 .about-list a { color:var(--m2); font-weight:500; text-decoration:none; }
 .about-list a:hover { text-decoration:underline; }
 
-/* ═══════════════════════════
-   WORK ROW
-═══════════════════════════ */
 .work-row {
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:18px;
-  /* grid children get full word-wrap */
   align-items:start;
 }
 
@@ -261,7 +241,6 @@ body {
   border:1px solid rgba(165,214,167,.28);
   opacity:0; transform:translateY(22px);
   transition:opacity .5s ease, transform .5s ease, box-shadow .3s;
-  /* let height grow with content */
   height:auto;
 }
 .work-card.on { opacity:1; transform:none; }
@@ -279,29 +258,176 @@ body {
 .work-title::after {
   content:''; position:absolute; inset:0;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent);
+  pointer-events:none;
 }
 
 .work-body { padding:14px; }
 
-/* ── project item ── */
+.projects-card {
+  background:var(--white);
+  border-radius:var(--r);
+  box-shadow:var(--sh2);
+  border:1px solid rgba(165,214,167,.30);
+  position:relative; overflow:hidden;
+  opacity:0; transform:translateY(18px);
+  transition:opacity .55s .08s ease, transform .55s .08s ease;
+}
+.projects-card.on { opacity:1; transform:none; }
+.projects-card::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:5px;
+  background:linear-gradient(180deg, #ffc93c, var(--l1), var(--d2));
+  border-radius:5px 0 0 5px;
+}
+
+.pc-head {
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  flex-wrap:wrap;
+  padding:22px 26px;
+  position:relative;
+}
+.pc-head::after {
+  content:''; position:absolute; top:-60px; right:-40px;
+  width:180px; height:180px; border-radius:50%;
+  background:radial-gradient(circle, rgba(165,214,167,.16) 0%, transparent 70%);
+  pointer-events:none;
+}
+.pc-heading { position:relative; z-index:1; }
+.pc-eyebrow {
+  display:block;
+  font-size:11px; font-weight:600; letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--m2); margin-bottom:6px;
+}
+.pc-heading h2 {
+  font-family:'Cormorant Garamond',serif; font-weight:700;
+  font-size:clamp(20px,2.6vw,26px); color:var(--d2); letter-spacing:.2px;
+}
+.pc-heading p { font-size:12.5px; color:var(--ink3); margin-top:5px; max-width:59 ch; }
+
+.see-projects-btn {
+  position:relative; z-index:2; flex-shrink:0;
+  display:inline-flex; align-items:center; gap:8px;
+  border:none; cursor:pointer;
+  background:linear-gradient(135deg, #ffd873, #ffc93c 55%, #f0a800);
+  color:#3a2600;
+  font-family:'Inter',sans-serif;
+  font-size:12.5px; font-weight:700; letter-spacing:.4px;
+  padding:11px 20px; border-radius:24px;
+  box-shadow:0 4px 16px rgba(240,168,0,.35);
+  transition:box-shadow .22s, transform .22s, background .22s;
+}
+.see-projects-btn .chev { transition:transform .3s; display:inline-block; font-size:11px; }
+.see-projects-btn:hover,
+.see-projects-btn:focus-visible {
+  background:linear-gradient(135deg, #fff0c2, #ffc93c 45%, #e69900);
+  box-shadow:0 8px 26px rgba(240,168,0,.5);
+  transform:translateY(-2px);
+}
+.see-projects-btn.open .chev { transform:rotate(180deg); }
+
+.indie-slider-wrap {
+  max-height:0; overflow:hidden;
+  background:linear-gradient(180deg, var(--p1) 0%, var(--p3) 100%);
+  transition:max-height .6s cubic-bezier(.4,0,.2,1);
+  border-top:1px solid rgba(165,214,167,.35);
+}
+.indie-slider-wrap.open { max-height:1000px; }
+
+.indie-slider { position:relative; padding:24px 26px 8px; }
+
+.indie-slide {
+  display:none; flex-direction:column; gap:12px;
+  animation:fadeSlide .45s ease;
+  background:var(--white);
+  border:1px solid rgba(165,214,167,.35);
+  border-radius:var(--rs);
+  padding:18px 20px;
+  box-shadow:var(--sh1);
+}
+.indie-slide.active { display:flex; }
+@keyframes fadeSlide { from{ opacity:0; transform:translateY(8px);} to{ opacity:1; transform:none;} }
+
+.slide-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.slide-name { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:700; color:var(--d2); line-height:1.35; }
+.slide-badge {
+  font-size:10.5px; font-weight:600; color:#fff; letter-spacing:.3px;
+  background:linear-gradient(135deg, var(--m1), var(--l1));
+  padding:4px 12px; border-radius:20px; white-space:nowrap;
+  box-shadow:0 2px 8px rgba(67,160,71,.30);
+}
+.slide-desc { font-size:13px; color:var(--ink3); line-height:1.7; }
+.slide-tech { display:flex; flex-wrap:wrap; gap:7px; }
+.tech-chip {
+  font-size:10.5px; font-weight:600; color:var(--m1);
+  background:var(--p1); border:1px solid rgba(67,160,71,.30);
+  padding:4px 11px; border-radius:20px;
+}
+.slide-actions { display:flex; flex-wrap:wrap; gap:9px; margin-top:6px; padding-top:12px; border-top:1px dashed rgba(165,214,167,.5); }
+.act-btn {
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:'Inter',sans-serif; font-size:11.5px; font-weight:600;
+  border-radius:20px; padding:8px 14px; cursor:pointer;
+  border:1.5px solid rgba(67,160,71,.35); background:#fff; color:var(--m1);
+  transition:background .2s, color .2s, transform .15s, box-shadow .2s;
+}
+.act-btn:hover { background:var(--m1); color:#fff; transform:translateY(-2px); box-shadow:0 4px 14px rgba(27,94,32,.28); }
+.act-btn.act-demo { border-color:rgba(240,168,0,.45); color:#a97300; }
+.act-btn.act-demo:hover { background:linear-gradient(135deg,#ffd873,#f0a800); color:#3a2600; box-shadow:0 4px 14px rgba(240,168,0,.35); }
+.act-btn[disabled] { opacity:.45; cursor:not-allowed; }
+.act-btn[disabled]:hover { background:#fff; color:var(--m1); transform:none; box-shadow:none; }
+
+.indie-dots {
+  display:flex; justify-content:center; gap:9px;
+  padding:16px 0 22px;
+}
+.indie-dots .dot {
+  width:8px; height:8px; border-radius:50%;
+  background:rgba(67,160,71,.28); border:none; cursor:pointer;
+  transition:background .25s, transform .25s, width .25s;
+}
+.indie-dots .dot.active { background:var(--m1); width:22px; border-radius:6px; }
+
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(3,26,6,.66);
+  backdrop-filter:blur(2px);
+  display:none; align-items:center; justify-content:center;
+  z-index:10000; padding:20px;
+}
+.modal-overlay.show { display:flex; }
+.modal-card {
+  background:#fff; border-radius:var(--r); max-width:540px; width:100%;
+  max-height:86vh; overflow:auto; box-shadow:var(--sh3);
+  padding:26px; position:relative;
+  animation:fadeSlide .3s ease;
+}
+.modal-close {
+  position:absolute; top:14px; right:14px;
+  width:32px; height:32px; border-radius:50%;
+  border:none; background:var(--p1); color:var(--m1);
+  font-size:17px; font-weight:700; cursor:pointer;
+  display:grid; place-items:center; transition:background .2s, color .2s, transform .2s;
+}
+.modal-close:hover { background:var(--m1); color:#fff; transform:rotate(90deg); }
+.modal-card h3 { font-family:'Cormorant Garamond',serif; font-size:22px; color:var(--d2); margin:2px 30px 12px 0; }
+.modal-card p { font-size:13.5px; color:var(--ink3); line-height:1.7; margin-bottom:12px; }
+.modal-card video { width:100%; border-radius:9px; background:#000; display:block; }
+.modal-note { font-size:12.5px; color:var(--ink3); background:var(--p1); border-radius:9px; padding:16px; text-align:center; }
+.modal-links { display:flex; flex-wrap:wrap; gap:9px; margin-top:8px; }
+
 .proj {
   border-radius:var(--rs);
   margin-bottom:12px; overflow:hidden;
   box-shadow:var(--sh1);
   border:1px solid rgba(165,214,167,.35);
   transition:transform .22s, box-shadow .22s;
-  /* expand with content */
   height:auto;
 }
 .proj:last-child { margin-bottom:0; }
 .proj:hover { transform:translateY(-2px); box-shadow:var(--sh2); }
 
-/* heading + year row */
 .proj-top {
   display:flex; align-items:flex-start; gap:8px;
   padding:9px 14px;
   background:linear-gradient(135deg, var(--d2) 0%, var(--m2) 60%, var(--l1) 100%);
-  /* word wrap for long headings */
   flex-wrap:wrap;
 }
 .proj-heading {
@@ -318,7 +444,6 @@ body {
   letter-spacing:.3px; flex-shrink:0; align-self:flex-start;
 }
 
-/* description bullet list */
 .proj-desc {
   background:#fff;
   padding:8px 14px 8px 14px;
@@ -339,14 +464,12 @@ body {
   box-shadow:0 1px 4px rgba(67,160,71,.4);
 }
 
-/* link row */
 .proj-link {
   background:var(--p1);
   padding:7px 14px;
   display:flex; align-items:flex-start; gap:7px;
   flex-wrap:wrap;
 }
-/* arrow before link */
 .link-arrow {
   flex-shrink:0; margin-top:1px;
   display:flex; align-items:center; justify-content:center;
@@ -363,9 +486,6 @@ body {
 }
 .proj-link a:hover { color:var(--m2); }
 
-/* ═══════════════════════════
-   SCROLL ARROW
-═══════════════════════════ */
 .scroll-arrow {
   position:fixed; bottom:28px; left:50%;
   transform:translateX(-50%);
@@ -393,9 +513,6 @@ body {
 #arrowDown.bounce { animation:bD .7s cubic-bezier(.36,.07,.19,.97); }
 #arrowUp.bounce   { animation:bU .7s cubic-bezier(.36,.07,.19,.97); }
 
-/* ═══════════════════════════
-   RESPONSIVE
-═══════════════════════════ */
 @media(max-width:760px){
   .hero-grid { grid-template-columns:1fr; }
   .hero-grid > * + * { border-left:none; border-top:1px solid rgba(255,255,255,.10); }
@@ -460,6 +577,25 @@ body {
   </div>
 </div>
 
+<!-- ════════════ FEATURED PROJECTS (slider) ════════════ -->
+<div class="projects-card" id="projectsCard">
+  <div class="pc-head">
+    <div class="pc-heading">
+      <span class="pc-eyebrow">Independent / Work</span>
+      <h2>Featured Projects</h2>
+      <p>A comprehensive list of projects build by me — browse them below.</p>
+    </div>
+    <button class="see-projects-btn" id="seeProjectsBtn" type="button">
+      See Projects <span class="chev">▾</span>
+    </button>
+  </div>
+
+  <div class="indie-slider-wrap" id="indieSliderWrap">
+    <div class="indie-slider" id="indieSlider"><!-- slides injected by JS --></div>
+    <div class="indie-dots" id="indieDots"><!-- dots injected by JS --></div>
+  </div>
+</div>
+
 <!-- ════════════ ABOUT ════════════ -->
 <div class="about-card" id="about">
   <div class="sec-title">A little bit about me</div>
@@ -474,7 +610,7 @@ body {
     </li>
     <li>
       <span class="bullet"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="bullet-txt">Teams</span></span>
-      Collaborated across many teams as team members as well as team leader across professional and academic platforms
+      Collaborated across many teams as team members as well as team leader across professional and academademic platforms
     </li>
     <li>
       <span class="bullet"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg><span class="bullet-txt">Research</span></span>
@@ -510,10 +646,6 @@ body {
         <div class="proj-desc"><ul>
           <li> Developing research papers based on new ideas and novel tecnhiques as well as old ideas as developed during academic years, currently targetting research publications. </li>
         </ul></div>
-        <!--<div class="proj-link">
-           <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-         <a href="#">Link to the project</a>
-        </div>-->
       </div>
 
       <div class="proj">
@@ -604,10 +736,6 @@ process in Schools. Used Unsupervised learning (K
 modes, KNN), real data collected from school. </li>
          
         </ul></div>
-        <!--<div class="proj-link">
-          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-          <a href="#">Link to the project</a>
-        </div>-->
       </div>
 
       <div class="proj">
@@ -620,10 +748,6 @@ modes, KNN), real data collected from school. </li>
 o Implemented Apriori and FP Tree on different datasets.</li>
 
         </ul></div>
-        <!--<div class="proj-link">
-          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-          <a href="#">Link to the project</a>
-        </div>-->
       </div>
 
       <div class="proj">
@@ -636,10 +760,6 @@ o Implemented Apriori and FP Tree on different datasets.</li>
           <li> Scratch development of Genetic Algorithm and Ant 
 Colony Optimisation. </li>
         </ul></div>
-        <!--<div class="proj-link">
-          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-          <a href="#">Link to the project</a>
-        </div>-->
 
  </div>
     <div class="proj">
@@ -652,10 +772,6 @@ Colony Optimisation. </li>
 finding support for the hypothesis, “Positive Quotes 
 influence positive thoughts”.  </li>
         </ul></div>
-       <!-- <div class="proj-link">
-          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-          <a href="#">Link to the project</a>
-        </div>-->
  </div>
     <div class="proj">
         <div class="proj-top">
@@ -669,10 +785,6 @@ to-end web application for generating recipes either
 from existing database or creating new ones with 
 text generation. Full stack website.  </li>
         </ul></div>
-        <!--<div class="proj-link">
-          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-        <a href="#">Link to the project</a>
-        </div>-->
 </div>
     <div class="proj">
         <div class="proj-top">
@@ -683,10 +795,6 @@ text generation. Full stack website.  </li>
           <li>  Predicting if URL is phished or not with Random Forest 
 Classifier and feature extraction methods.  </li>
         </ul></div>
-        <!--<div class="proj-link">
-          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-          <a href="#">Link to the project</a>
-        </div>-->
       </div>
 
 
@@ -699,10 +807,6 @@ Classifier and feature extraction methods.  </li>
           <li>Predict the possible regions of solar flares with SVM by 
 analysing the rays data of sun.   </li>
         </ul></div>
-       <!-- <div class="proj-link">
-          <span class="link-arrow"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-          <a href="#">Link to the project</a>
-        </div>-->
  </div>
 
     </div>
@@ -719,14 +823,35 @@ analysing the rays data of sun.   </li>
   <svg viewBox="0 0 24 24"><path d="M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6 1.41 1.41z"/></svg>
 </button>
 
+<!-- ═══ DEMO VIDEO MODAL ═══ -->
+<div class="modal-overlay" id="demoModal">
+  <div class="modal-card">
+    <button class="modal-close" id="demoModalClose" type="button">&times;</button>
+    <h3 id="demoModalTitle">Project demo</h3>
+    <div id="demoModalBody"></div>
+  </div>
+</div>
+
+<!-- ═══ KNOW MORE MODAL ═══ -->
+<div class="modal-overlay" id="moreModal">
+  <div class="modal-card">
+    <button class="modal-close" id="moreModalClose" type="button">&times;</button>
+    <h3 id="moreModalTitle"></h3>
+    <p id="moreModalDesc"></p>
+    <div class="slide-tech" id="moreModalTech"></div>
+    <div class="modal-links" id="moreModalLinks"></div>
+  </div>
+</div>
+
 <script>
 $(function(){
 
   /* entrance stagger */
   setTimeout(function(){ $('#hero').addClass('on'); }, 80);
-  setTimeout(function(){ $('#about').addClass('on'); }, 280);
-  setTimeout(function(){ $('#wc1').addClass('on'); }, 450);
-  setTimeout(function(){ $('#wc2').addClass('on'); }, 590);
+  setTimeout(function(){ $('#projectsCard').addClass('on'); }, 240);
+  setTimeout(function(){ $('#about').addClass('on'); }, 380);
+  setTimeout(function(){ $('#wc1').addClass('on'); }, 520);
+  setTimeout(function(){ $('#wc2').addClass('on'); }, 640);
 
   /* bounce */
   function bounce($el){
@@ -782,6 +907,282 @@ function copyEmail(){
     }, 2000);
   });
 }
+
+/* ═══════════════════════════
+   INDEPENDENT WORK — SEE PROJECTS SLIDER
+   ── Replace the placeholder '#' values below with each
+      project's real video, GitHub / arXiv, and live-site links.
+═══════════════════════════ */
+var independentProjects = [
+  {
+    name: "Buildnn",
+    year: "2026",
+    tag: "Independent",
+    desc: "Build Neural Networks Visually, solve the problem of not understanding how neural networks function by building them visually component by compoennt from scratch, any or new whichever you want to, pass dataset and simulate the neural network, build to solve the problem of visually and building new nn from scratch",
+    tech: ["Neural Networks", "AI", "Deep Learning", "Component by Component", "Visual", "Fullstack", "Vuejs","Firebase","Vite"],
+    video: "https://drive.google.com/file/d/1L5TyAWVGRjzHbD0V1QX7KnapZWaRQ9f-/view?usp=sharing",
+    github: "#",
+    live: "https://www.buildnn.site"
+  },
+  {
+    name: "Lawyer LLM",
+    year: "2024 - 2025",
+    tag: "Work",
+    desc: "Build a LLM Lawyer after extensive research and a whole evaluation Pipeline from scratch to evaluate models performance, from scratch",
+    tech: ["LLM", "LLM Finetuining", "Synthetic Data", "Research", "Evaluation Pipeline", "Benchmark testing", "dop", "abliterations","Test Data Generation","LLM Architecture","LLM Inference","LLM as a judge","Neural Networks"],
+    video: "",
+    github: "#",
+    live: "#"
+  },
+
+  {
+    name: "Computer Vision for Handwriting Analysis",
+    year: "2023-2025",
+    tag: "Independent",
+    desc: "Novel CV methods to identify handwriting features and classify them into groups linked to psychological and behavioural traits, aiding school counselling. Used unsupervised learning (K-Modes, KNN) on real data collected from schools.",
+    tech: ["Computer Vision", "K-Modes", "KNN", "Unsupervised Learning", "Python"],
+    video: "",
+    github: "#",
+    live: "#"
+  },
+{
+    name: "Dataformer",
+    year: "2024 - 2025",
+    tag: "Work",
+    desc: "Build a open source library for fast synthetic data generations, with asynchronous requests and managing cache and with techniques like cot, pvg, etc, supporting llms across large pool of providers like deepinfra, openai, together, anthropic, fireworks, openworks, gemini etc, wrote tests for the fucntions. established as python package",
+    tech: ["LLM", "Open Source", "Synthetic Data Generation", "Research", "Asynchronous Pipeline", "Benchmark and dataset creation", "Tests","cache optimization","python package","many llms and providers","local and cloud llm support", "developed use cases for other applications"],
+    video: "",
+    github: "https://github.com/ruchi961/dataformer",
+    live: "#"
+  },
+
+  {
+    name: "Association Mining Implementations",
+    year: "2023 / 2026",
+    tag: "Independent",
+    desc: "A novel method for optimising the Apriori algorithm, with Apriori and FP-Tree implemented and compared across different datasets.",
+    tech: ["Apriori", "FP-Tree", "Data Mining", "Python"],
+    video: "",
+    github: "https://github.com/ruchi961/NLP_MiniProject.git",
+    live: "#"
+  },
+  {
+    name: "Genetic Algorithm",
+    year: "2022",
+    tag: "Independent",
+    desc: "Scratch (from-first-principles) implementation of a Genetic Algorithm for solving combination problem.",
+    tech: ["Genetic Algorithms", "Ant Colony Optimisation", "Python"],
+    video: "",
+    github: "https://github.com/ruchi961/GeneticAlgorithm",
+    live: "#"
+  },
+{
+    name: "Ant Colony Optimisation",
+    year: "2022",
+    tag: "Independent",
+    desc: "Scratch (from-first-principles) implementation of Ant Colony Optimisation for solving optimisation problems.",
+    tech: ["Genetic Algorithms", "Ant Colony Optimisation", "Python"],
+    video: "",
+    github: "https://github.com/ruchi961/AntColonyOptimization",
+    live: "#"
+  },
+
+  {
+    name: "Reading Quotes & Emotions",
+    year: "2022",
+    tag: "Independent",
+    desc: "On-ground data collection with a questionnaire to test the hypothesis that positive quotes influence positive thoughts.",
+    tech: ["Survey Research", "Statistical Analysis", "Data Collection"],
+    video: "",
+    github: "#",
+    live: "#"
+  },
+  {
+    name: "Recipe Generator with Deep Learning",
+    year: "2022",
+    tag: "Independent",
+    desc: "A Conditional Transformer (Hugging Face) that generates novel recipes from given ingredients, wired into a full end-to-end web app that can also pull from an existing recipe database.",
+    tech: ["Hugging Face", "Transformers", "NLP", "Flask", "Full-Stack"],
+    video: "",
+    github: "https://github.com/ruchi961/recipe-generator-ctrl",
+    live: "#"
+  },
+  {
+    name: "URL Phishing Prediction",
+    year: "2022",
+    tag: "Independent",
+    desc: "Predicts whether a URL is phished using a Random Forest classifier paired with dedicated feature-extraction methods.",
+    tech: ["Random Forest", "Feature Engineering", "scikit-learn", "Python"],
+    video: "",
+    github: "#",
+    live: "#"
+  },
+  {
+    name: "Solar Flare Prediction",
+    year: "2021",
+    tag: "Independent",
+    desc: "Predicts likely regions of solar flares by analysing solar ray data with a Support Vector Machine.",
+    tech: ["SVM", "Data Analysis", "Python"],
+    video: "",
+    github: "https://github.com/ruchi961/SolarFlarePrediction",
+    live: "#"
+  }
+];
+
+(function(){
+  var $wrap   = $('#indieSliderWrap');
+  var $slider = $('#indieSlider');
+  var $dots   = $('#indieDots');
+  var $btn    = $('#seeProjectsBtn');
+  var current = 0;
+  var timer   = null;
+  var AUTOPLAY_MS = 2000;
+
+  function hasLink(url){ return !!url && url !== '#'; }
+
+  /* build slides + dots once */
+  independentProjects.forEach(function(p, i){
+    var $slide = $(
+      '<div class="indie-slide' + (i === 0 ? ' active' : '') + '" data-index="' + i + '">' +
+        '<div class="slide-head">' +
+          '<span class="slide-name"></span>' +
+          '<span class="slide-badge"></span>' +
+        '</div>' +
+        '<p class="slide-desc"></p>' +
+        '<div class="slide-tech"></div>' +
+        '<div class="slide-actions"></div>' +
+      '</div>'
+    );
+    $slide.find('.slide-name').text(p.name);
+    $slide.find('.slide-badge').text(p.year + ' · ' + p.tag);
+    $slide.find('.slide-desc').text(p.desc);
+    var $tech = $slide.find('.slide-tech');
+    p.tech.forEach(function(t){ $tech.append($('<span class="tech-chip"></span>').text(t)); });
+
+    /* only show demo / code / live buttons when a real value is provided */
+    var $actions = $slide.find('.slide-actions');
+    if (hasLink(p.video)){
+      $actions.append('<button type="button" class="act-btn act-demo" data-action="demo">▶ See Demo</button>');
+    }
+    if (hasLink(p.github)){
+      $actions.append('<button type="button" class="act-btn act-code" data-action="code">🔗 Github / Research arXiv</button>');
+    }
+    if (hasLink(p.live)){
+      $actions.append('<button type="button" class="act-btn act-live" data-action="live">🌐 See Live Project</button>');
+    }
+    $actions.append('<button type="button" class="act-btn act-more" data-action="more">ℹ Know More</button>');
+
+    $slide.data('project', p);
+    $slider.append($slide);
+
+    var $dot = $('<button type="button" class="dot' + (i === 0 ? ' active' : '') + '"></button>')
+      .attr('aria-label', 'Show ' + p.name)
+      .attr('data-index', i);
+    $dots.append($dot);
+  });
+
+  function showSlide(i){
+    current = (i + independentProjects.length) % independentProjects.length;
+    $slider.children('.indie-slide').removeClass('active').eq(current).addClass('active');
+    $dots.children('.dot').removeClass('active').eq(current).addClass('active');
+  }
+
+  function startAutoplay(){
+    stopAutoplay();
+    timer = setInterval(function(){ showSlide(current + 1); }, AUTOPLAY_MS);
+  }
+  function stopAutoplay(){ if (timer){ clearInterval(timer); timer = null; } }
+
+  /* toggle open/close on "See Projects" */
+  $btn.on('click', function(){
+    var open = $wrap.toggleClass('open').hasClass('open');
+    $btn.toggleClass('open', open);
+    if (open){ showSlide(current); startAutoplay(); }
+    else { stopAutoplay(); }
+  });
+
+  /* pause on hover, resume on leave */
+  $slider.add($dots).on('mouseenter', stopAutoplay).on('mouseleave', function(){
+    if ($wrap.hasClass('open')) startAutoplay();
+  });
+
+  /* dot navigation jumps straight to that project's slide */
+  $dots.on('click', '.dot', function(){
+    showSlide($(this).data('index'));
+    if ($wrap.hasClass('open')) startAutoplay();
+  });
+
+  /* slide action buttons */
+  $slider.on('click', '.act-btn', function(){
+    var p = $(this).closest('.indie-slide').data('project');
+    var action = $(this).data('action');
+    if (action === 'demo') openDemoModal(p);
+    else if (action === 'code') openLink(p.github);
+    else if (action === 'live') openLink(p.live);
+    else if (action === 'more') openMoreModal(p);
+  });
+
+  function openLink(url){
+    if (hasLink(url)) window.open(url, '_blank', 'noopener');
+  }
+
+  function openDemoModal(p){
+    $('#demoModalTitle').text(p.name + ' — Demo');
+    var $body = $('#demoModalBody').empty();
+    if (p.video){
+      $body.append($('<video controls></video>').attr('src', p.video));
+    } else {
+      $body.append('<div class="modal-note">Demo video coming soon.</div>');
+    }
+    $('#demoModal').addClass('show');
+  }
+
+  function openMoreModal(p){
+    $('#moreModalTitle').text(p.name);
+    $('#moreModalDesc').text(p.desc);
+    var $tech = $('#moreModalTech').empty();
+    p.tech.forEach(function(t){ $tech.append($('<span class="tech-chip"></span>').text(t)); });
+
+    /* only show links for values that are actually provided */
+    var $links = $('#moreModalLinks').empty();
+    if (hasLink(p.video)){
+      $links.append(
+        $('<button type="button" class="act-btn act-demo">▶ See Demo</button>').on('click', function(){ openDemoModal(p); })
+      );
+    }
+    if (hasLink(p.github)){
+      $links.append(
+        $('<button type="button" class="act-btn act-code">🔗 Github / Research arXiv</button>').on('click', function(){ openLink(p.github); })
+      );
+    }
+    if (hasLink(p.live)){
+      $links.append(
+        $('<button type="button" class="act-btn act-live">🌐 See Live Project</button>').on('click', function(){ openLink(p.live); })
+      );
+    }
+
+    $('#moreModal').addClass('show');
+  }
+
+  /* modal close handlers */
+  $('#demoModalClose').on('click', function(){
+    $('#demoModal').removeClass('show');
+    $('#demoModalBody').empty(); // stop any playing video
+  });
+  $('#moreModalClose').on('click', function(){ $('#moreModal').removeClass('show'); });
+  $('.modal-overlay').on('click', function(e){
+    if (e.target === this){
+      $(this).removeClass('show');
+      if (this.id === 'demoModal') $('#demoModalBody').empty();
+    }
+  });
+  $(document).on('keydown', function(e){
+    if (e.key === 'Escape'){
+      $('.modal-overlay.show').removeClass('show');
+      $('#demoModalBody').empty();
+    }
+  });
+})();
 </script>
 </body>
 </html>
