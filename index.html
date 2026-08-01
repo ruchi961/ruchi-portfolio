@@ -920,7 +920,7 @@ var independentProjects = [
     tag: "Independent",
     desc: "Build Neural Networks Visually, solve the problem of not understanding how neural networks function by building them visually component by compoennt from scratch, any or new whichever you want to, pass dataset and simulate the neural network, build to solve the problem of visually and building new nn from scratch",
     tech: ["Neural Networks", "AI", "Deep Learning", "Component by Component", "Visual", "Fullstack", "Vuejs","Firebase","Vite"],
-    video: "https://drive.google.com/file/d/1L5TyAWVGRjzHbD0V1QX7KnapZWaRQ9f-/view?usp=sharing",
+    video: "https://drive.google.com/file/d/1L5TyAWVGRjzHbD0V1QX7KnapZWaRQ9f-/preview",
     github: "#",
     live: "https://www.buildnn.site"
   },
@@ -1130,7 +1130,13 @@ var independentProjects = [
     $('#demoModalTitle').text(p.name + ' — Demo');
     var $body = $('#demoModalBody').empty();
     if (p.video){
-      $body.append($('<video controls></video>').attr('src', p.video));
+           /*$body.append($('<video controls></video>').attr('src', p.video));*/
+ $body.append($('<iframe \
+   width="890" \
+  height="480" \
+  allow="autoplay">\
+</iframe>').attr('src', p.video))
+
     } else {
       $body.append('<div class="modal-note">Demo video coming soon.</div>');
     }
